@@ -1,18 +1,14 @@
 import com.google.gson.Gson;
-import org.apache.commons.math.stat.clustering.Cluster;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-import java.util.ArrayList;
-
 public class kMeans {
-    // args[0] -> input dir, args[1] -> output dir
+
     public static void main(String[] args) throws Exception {
 
         int k = 5;
@@ -31,6 +27,7 @@ public class kMeans {
             conf.set(Integer.toString(i), cSerialized);
         }                        // ...can also be used java serializer
 
+
         // create a job until no changed are detected
         int code;
         do {
@@ -43,17 +40,15 @@ public class kMeans {
             job.setMapperClass(Map.class);
             job.setCombinerClass(Combine.class);
             job.setReducerClass(Reduce.class);
-            // specify output format
-            job.setMapOutputKeyClass(Point.class);
+            // specify output formats
+            job.setMapOutputKeyClass(Centroid.class);
             job.setMapOutputValueClass(Point.class);
             job.setOutputKeyClass(Point.class);
             job.setOutputValueClass(IntWritable.class);
-            // set input format
-            job.setInputFormatClass(FileInputFormat.class); // TODO is it correct? We have a csv...
-            // set input and output folders (?)
+            // set input and output folders
             FileInputFormat.addInputPath(job, inputDir);
             FileOutputFormat.setOutputPath(job, outputDir);
-
+            // wait for job completion
             code = job.waitForCompletion(true) ? 0 : 1;
 
         } while(Boolean.parseBoolean(conf.get("clusterChanged")) && code == 0);
@@ -62,5 +57,8 @@ public class kMeans {
         System.exit(code);
 
 
+
+
     }
+
 }
