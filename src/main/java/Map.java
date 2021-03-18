@@ -13,14 +13,14 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
 
     private ArrayList<Centroid> centroids = new ArrayList<>();
 
-    //get centroids and k from conf
+    //get centroids from conf
     @Override
     protected void setup(Context context) throws IOException, InterruptedException{
         Configuration conf = context.getConfiguration();
         Gson gson = new Gson();
 
-        int k = Integer.parseInt(conf.get("k"));
-        //deserialize centroids
+        int k = Integer.parseInt(conf.get("k")); // get k from conf
+        //get and deserialize centroids
         for (int i = 0; i < k; i++){
             String c_string = conf.get(String.valueOf(i));
             Centroid c = gson.fromJson(c_string, Centroid.class);

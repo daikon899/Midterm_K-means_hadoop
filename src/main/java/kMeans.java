@@ -31,7 +31,7 @@ public class kMeans {
         for (int i = 0; i < k; i++) {
             Centroid c = new Centroid(i,0, 0, 0); // TODO choose better centroids
             String cSerialized = gson.toJson(c);   //serialize
-            conf.set(Integer.toString(k), cSerialized);
+            conf.set(Integer.toString(i), cSerialized);
         }                        // ...can also be used java serializer
 
 
@@ -57,6 +57,7 @@ public class kMeans {
 
         } while(Boolean.parseBoolean(conf.get("clusterChanged")) && code == 0);
 
+        //TODO write results ?
         //clean up intermediate output
         FileSystem.get(conf).delete(outputDirIntermediate, true);
 

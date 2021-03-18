@@ -1,5 +1,8 @@
+import com.google.gson.Gson;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
@@ -7,20 +10,42 @@ import java.io.IOException;
 //calculate sum and update centroids
 public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
 
+
+    @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{
+        int clusterId = c.getId();
 
+        Configuration conf = context.getConfiguration();
 
-        // TODO missing something
+        float sumX = 0, sumY = 0, sumZ = 0;
+        int numPoints = 0;
 
         for (Point p: points){
-            int clusterId = c.getId();
-            context.write(p, new IntWritable(clusterId));
+            if (p instanceof SumPoints){
+                sumX += p.getX();
+                sumY += p.getY();
+                sumZ += p.getZ();
+                numPoints += ((SumPoints) p).getNumPoints();
+            }
+            else {
+                context.write(p, new IntWritable(clusterId));
+            }
         }
+
+        //calculate means and update centroids
+        c.setX( sumX / numPoints );
+        c.setX( sumY / numPoints );
+        c.setX( sumZ / numPoints );
+
+        //serialize new centroids and write them in Configuration
+        Gson gson = new Gson();
+        String cSerialized = gson.toJson(c);
+        conf.set(Integer.toString(clusterId), cSerialized);
     }
 
     //execution at the end of the task
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
-        //maybe we need it
+        //maybe we don't need it
     }
 }

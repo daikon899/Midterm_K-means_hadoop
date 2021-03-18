@@ -5,14 +5,11 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.lang.Math;
 
-
+//TODO extend from Point
 public class Centroid implements WritableComparable <Centroid>{
     private float x,y,z;
     private boolean isChanged;
-    private int id;
-
-    float xTotal = 0, yTotal = 0, zTotal = 0;
-
+    private final int id;
 
     public Centroid(int id, float x, float y, float z){
         this.id = id;
@@ -24,9 +21,11 @@ public class Centroid implements WritableComparable <Centroid>{
 
     @Override
     public int compareTo(Centroid o) {
-        return 0;         //TODO implement method
-        //return -1;
-        //return 1;
+        if (this.id == o.getId()){
+            return 0;
+        }
+        return this.id < o.getId() ? 1 : 0; //TODO check if correct
+
     }
 
     @Override
@@ -48,5 +47,17 @@ public class Centroid implements WritableComparable <Centroid>{
         float distanceY = p.getY() - y;
         float distanceZ = p.getZ() - z;
         return (float) Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2) + Math.pow(distanceZ, 2));
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
     }
 }
