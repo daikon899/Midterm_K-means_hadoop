@@ -1,12 +1,14 @@
 import com.google.gson.Gson;
-import org.apache.commons.math.stat.clustering.Cluster;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.log4j.Logger;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
 
 //same of assignCluster() function
 public class Map extends Mapper<Object, Text, Centroid, Point> {
@@ -18,7 +20,6 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
     protected void setup(Context context) throws IOException, InterruptedException{
         Configuration conf = context.getConfiguration();
         Gson gson = new Gson();
-
         int k = Integer.parseInt(conf.get("k")); // get k from conf
         //get and deserialize centroids
         for (int i = 0; i < k; i++){
@@ -35,7 +36,7 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
         float x = Float.parseFloat(tokenizer.nextToken());
         float y = Float.parseFloat(tokenizer.nextToken());
         float z = Float.parseFloat(tokenizer.nextToken());
-        Point p = new Point(x,y,z);
+        Point p = new Point(x, y, z);
 
         //choose the closest centroid
         float minDistance = Float.MAX_VALUE;
