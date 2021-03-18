@@ -57,6 +57,7 @@ public class kMeans {
 
         } while(Boolean.parseBoolean(conf.get("clusterChanged")) && code == 0);
 
+
         System.exit(code);
 
     }

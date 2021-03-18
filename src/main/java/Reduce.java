@@ -14,11 +14,10 @@ public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{
         int clusterId = c.getId();
-
-        Configuration conf = context.getConfiguration();
-
         float sumX = 0, sumY = 0, sumZ = 0;
         int numPoints = 0;
+
+        Configuration conf = context.getConfiguration();
 
         for (Point p: points){
             if (p instanceof SumPoints){
@@ -33,9 +32,9 @@ public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
         }
 
         //calculate means and update centroids
-        boolean changed = c.setCoords( sumX / numPoints , sumY / numPoints, sumZ / numPoints);
+        boolean changed = c.setCoords( sumX / numPoints, sumY / numPoints, sumZ / numPoints);
         if (changed){
-            conf.setBoolean("clusterChanged", true);
+            context.getConfiguration().setBoolean("clusterChanged", true);
         }
 
         //serialize new centroids and write them in Configuration

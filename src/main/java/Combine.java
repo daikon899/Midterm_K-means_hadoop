@@ -8,7 +8,6 @@ import java.io.IOException;
 public class Combine extends Reducer<Centroid, Point, Centroid, Point> {
 
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException {
-        Configuration conf = context.getConfiguration();
 
         SumPoints sum = new SumPoints();
 
