@@ -31,7 +31,6 @@ public class kMeans {
             conf.set(Integer.toString(i), cSerialized);
         }                        // ...can also be used java serializer
 
-
         // create a job until no changed are detected
         int code;
         do {
@@ -45,6 +44,8 @@ public class kMeans {
             job.setCombinerClass(Combine.class);
             job.setReducerClass(Reduce.class);
             // specify output format
+            job.setMapOutputKeyClass(Point.class);
+            job.setMapOutputValueClass(Point.class);
             job.setOutputKeyClass(Point.class);
             job.setOutputValueClass(IntWritable.class);
             // set input format
@@ -59,6 +60,7 @@ public class kMeans {
 
 
         System.exit(code);
+
 
     }
 }
