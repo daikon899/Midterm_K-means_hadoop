@@ -1,3 +1,7 @@
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
 public class SumPoints extends Point{
 
     private int numPoints = 0;
@@ -17,5 +21,16 @@ public class SumPoints extends Point{
         return numPoints;
     }
 
+    @Override
+    public void write(DataOutput out) throws IOException {
+        super.write(out);
+        out.writeInt(numPoints);
+    }
+
+    @Override
+    public void readFields(DataInput in) throws IOException {
+        super.readFields(in);
+        this.numPoints = in.readInt();
+    }
 
 }

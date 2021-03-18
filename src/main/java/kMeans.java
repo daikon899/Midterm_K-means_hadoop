@@ -16,16 +16,13 @@ public class kMeans {
     public static void main(String[] args) throws Exception {
 
         int k = 5;
+        Path inputDir = new Path("input");
+        Path outputDir = new Path("output");
 
-        Path inputDir = new Path(args[0]);
-        Path outputDirIntermediate = new Path(args[1] + "_int"); // where to save intermediate iterations
-        Path outputDir = new Path(args[1]);
 
-        //pass parameters to Configuration
+        //pass k and centroids to Configuration
         Configuration conf = new Configuration();
         conf.setInt("k", k);
-        conf.setBoolean("clusterChanged", false);
-
         //create centroids and pass them to Configuration
         Gson gson = new Gson();
         for (int i = 0; i < k; i++) {
@@ -38,6 +35,9 @@ public class kMeans {
         // create a job until no changed are detected
         int code;
         do {
+            conf.setBoolean("clusterChanged", false);
+            FileSystem.get(conf).delete(outputDir, true);
+
             Job job = Job.getInstance(conf, "kMeans");
             job.setJarByClass(kMeans.class);
             // specify Mapper Reducer
@@ -47,19 +47,15 @@ public class kMeans {
             // specify output format
             job.setOutputKeyClass(Point.class);
             job.setOutputValueClass(IntWritable.class);
-            //set input format
-            job.setInputFormatClass(FileInputFormat.class); //is it correct? We have a csv...
-            // I don't know
+            // set input format
+            job.setInputFormatClass(FileInputFormat.class); // TODO is it correct? We have a csv...
+            // set input and output folders (?)
             FileInputFormat.addInputPath(job, inputDir);
-            FileOutputFormat.setOutputPath(job, outputDirIntermediate);
+            FileOutputFormat.setOutputPath(job, outputDir);
 
             code = job.waitForCompletion(true) ? 0 : 1;
 
         } while(Boolean.parseBoolean(conf.get("clusterChanged")) && code == 0);
-
-        //TODO write results ?
-        //clean up intermediate output
-        FileSystem.get(conf).delete(outputDirIntermediate, true);
 
         System.exit(code);
 

@@ -33,9 +33,10 @@ public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
         }
 
         //calculate means and update centroids
-        c.setX( sumX / numPoints );
-        c.setX( sumY / numPoints );
-        c.setX( sumZ / numPoints );
+        boolean changed = c.setCoords( sumX / numPoints , sumY / numPoints, sumZ / numPoints);
+        if (changed){
+            conf.setBoolean("clusterChanged", true);
+        }
 
         //serialize new centroids and write them in Configuration
         Gson gson = new Gson();

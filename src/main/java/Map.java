@@ -48,8 +48,6 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
             }
         }
 
-        //TODO handle flag clusterChanged
-
         context.write(bestCentroid, p);
     }
 }
