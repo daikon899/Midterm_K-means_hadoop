@@ -1,15 +1,22 @@
+import org.apache.hadoop.io.WritableComparable;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
 
-public class Centroid extends Point implements Comparable<Centroid> {  //same thing as WritableComparable (Point implements writable)
+public class Centroid extends Point implements WritableComparable <Centroid> {  //same thing as WritableComparable (Point implements writable)
 
     private int id;
 
     public Centroid(int id, float x, float y, float z){
         super(x, y, z);
         this.id = id;
+    }
+
+    //TODO you don't need it. it is used to fix an error
+    public Centroid(){
+        super(0,0,0);
     }
 
 

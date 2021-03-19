@@ -9,7 +9,7 @@ import java.io.IOException;
 
 //calculate sum and update centroids
 public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
-
+    boolean clusterChanged = false; //TODO
 
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{
@@ -34,7 +34,7 @@ public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
         //calculate means and update centroids
         boolean changed = c.setCoords( sumX / numPoints, sumY / numPoints, sumZ / numPoints);
         if (changed){
-            context.getConfiguration().setBoolean("clusterChanged", true);
+            conf.setBoolean("clusterChanged", true);
         }
 
         //serialize new centroids and write them in Configuration
