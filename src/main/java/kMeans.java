@@ -41,7 +41,7 @@ public class kMeans {
             job.setJarByClass(kMeans.class);
             // specify Mapper Reducer
             job.setMapperClass(Map.class);
-            job.setCombinerClass(Combine.class);
+            //job.setCombinerClass(Combine.class); // TODO remove comment when and if a better version of the combiner is implemented
             job.setReducerClass(Reduce.class);
             // specify output formats
             job.setMapOutputKeyClass(Centroid.class);

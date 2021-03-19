@@ -17,7 +17,7 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
 
     //get centroids from conf
     @Override
-    protected void setup(Context context) throws IOException, InterruptedException {
+    protected void setup(Context context) {
         Configuration conf = context.getConfiguration();
         Gson gson = new Gson();
         int k = Integer.parseInt(conf.get("k")); // get k from conf
@@ -51,6 +51,6 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
         }
 
         context.write(bestCentroid, p);
-        //logger.info("x:" + Float.toString(x) + " y:" + Float.toString(y) + " z:" + Float.toString(z));
+        logger.info("x:" + x + " y:" + y + " z:" + z);
     }
 }

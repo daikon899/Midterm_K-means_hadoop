@@ -6,13 +6,16 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 //calculate sum and update centroids
 public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
+    private final Logger logger = Logger.getLogger("loggerReducer");
     boolean clusterChanged = false; //TODO try to use cleanup to set the "global" clusterChanged
 
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{
+        logger.info("Starting Reduce process...");
         int clusterId = c.getId();
         float sumX = 0, sumY = 0, sumZ = 0;
         int numPoints = 0;
@@ -20,15 +23,11 @@ public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
         Configuration conf = context.getConfiguration();
 
         for (Point p: points){
-            if (p instanceof SumPoints){
-                sumX += p.getX();
-                sumY += p.getY();
-                sumZ += p.getZ();
-                numPoints += ((SumPoints) p).getNumPoints();
-            }
-            else {
-                context.write(p, new IntWritable(clusterId));
-            }
+            sumX += p.getX();
+            sumY += p.getY();
+            sumZ += p.getZ();
+            numPoints += 1;
+            context.write(p, new IntWritable(clusterId));
         }
 
         //calculate means and update centroids
