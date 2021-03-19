@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 
 //same of assignCluster() function
 public class Map extends Mapper<Object, Text, Centroid, Point> {
-    //private final Logger logger = Logger.getLogger("MapLogger");
+    private final Logger logger = Logger.getLogger("MapLogger");
     private ArrayList<Centroid> centroids = new ArrayList<>();
 
     //get centroids from conf
@@ -50,7 +50,7 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
             }
         }
 
-        //logger.info("Ending map process");
         context.write(bestCentroid, p);
+        //logger.info("x:" + Float.toString(x) + " y:" + Float.toString(y) + " z:" + Float.toString(z));
     }
 }

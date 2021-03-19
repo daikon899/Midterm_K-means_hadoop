@@ -29,8 +29,8 @@ public class kMeans {
 
 
         // create a job until no changes are detected
-        // FIXME every job takes the same dataset file as input from input folder, witch has no cluster assignment,
-        //  so every job does the first iteration and the loop never stops
+        // FIXME combiner is never called
+
         // TODO try to change the chain to Map - Reduce - Map
         int code;
         do {
@@ -53,6 +53,8 @@ public class kMeans {
             FileOutputFormat.setOutputPath(job, outputDir);
             // wait for job completion
             code = job.waitForCompletion(true) ? 0 : 1;
+
+            System.out.println("Job ended");
 
         } while(Boolean.parseBoolean(conf.get("clusterChanged")) && code == 0);
 
