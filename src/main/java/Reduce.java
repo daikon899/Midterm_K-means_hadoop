@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 //calculate sum and update centroids
 public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
     private final Logger logger = Logger.getLogger("loggerReducer");
-    boolean clusterChanged = false; //TODO try to use cleanup to set the "global" clusterChanged
+    //boolean clusterChanged = false; //TODO try to use cleanup to set the "global" clusterChanged
 
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{

@@ -29,9 +29,9 @@ public class kMeans {
 
 
         // create a job until no changes are detected
-        // FIXME combiner is never called
+        // FIXME something is wrong with map class or in write/read process
 
-        // TODO try to change the chain to Map - Reduce - Map
+
         int code;
         do {
             conf.setBoolean("clusterChanged", false);
@@ -52,6 +52,8 @@ public class kMeans {
             FileInputFormat.addInputPath(job, inputDir);
             FileOutputFormat.setOutputPath(job, outputDir);
             // wait for job completion
+            System.out.println("Starting the job...");
+
             code = job.waitForCompletion(true) ? 0 : 1;
 
             System.out.println("Job ended");
