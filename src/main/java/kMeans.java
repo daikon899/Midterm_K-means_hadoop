@@ -28,7 +28,10 @@ public class kMeans {
         }                        // ...can also be used java serializer
 
 
-        // create a job until no changed are detected
+        // create a job until no changes are detected
+        // FIXME every job takes the same dataset file as input from input folder, witch has no cluster assignment,
+        //  so every job does the first iteration and the loop never stops
+        // TODO try to change the chain to Map - Reduce - Map
         int code;
         do {
             conf.setBoolean("clusterChanged", false);

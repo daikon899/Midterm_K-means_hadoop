@@ -9,7 +9,7 @@ import java.io.IOException;
 
 //calculate sum and update centroids
 public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
-    boolean clusterChanged = false; //TODO
+    boolean clusterChanged = false; //TODO try to use cleanup to set the "global" clusterChanged
 
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{
@@ -45,7 +45,7 @@ public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
 
     //execution at the end of the task
     @Override
-    protected void cleanup(Context context) throws IOException, InterruptedException {
+    protected void cleanup(Context context) {
         //maybe we don't need it
     }
 }

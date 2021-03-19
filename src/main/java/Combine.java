@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 //write partial sum for each cluster
+//FIXME reduce seems to be never called
 public class Combine extends Reducer<Centroid, Point, Centroid, Point> {
     private final Logger logger = Logger.getLogger("loggerCombiner");
 
@@ -13,8 +14,6 @@ public class Combine extends Reducer<Centroid, Point, Centroid, Point> {
         logger.info("Combiner started");
 
         SumPoints sum = new SumPoints();
-
-        System.out.println("Entrato nel combiner");
 
         for (Point p : points) {
             sum.sumCoords(p.getX(), p.getY(), p.getZ());
