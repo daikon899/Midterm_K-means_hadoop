@@ -6,6 +6,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class Point implements Writable {
+    // TODO check if thees fields have to be FloatWritable
     protected float x, y, z;
 
 

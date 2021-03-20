@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class Centroid extends Point implements WritableComparable <Centroid> {  //same thing as WritableComparable (Point implements writable)
 
+    // TODO check if this field has to be IntWritable
     protected int id;
 
     public Centroid(int id, float x, float y, float z){

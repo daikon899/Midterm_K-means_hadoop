@@ -25,6 +25,7 @@ public class kMeans {
         //create centroids and pass them to Configuration
         Gson gson = new Gson();
         for (int i = 0; i < k; i++) {
+            // TODO check if the centroids generated are different
             Centroid c = new Centroid(i, new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
             String cSerialized = gson.toJson(c);   //serialize
             conf.set(Integer.toString(i), cSerialized);
