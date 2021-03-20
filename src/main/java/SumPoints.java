@@ -1,3 +1,6 @@
+import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.IntWritable;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;

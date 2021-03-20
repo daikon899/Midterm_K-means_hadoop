@@ -1,3 +1,5 @@
+import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.WritableComparable;
 
 import java.io.DataInput;
@@ -37,7 +39,9 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
     @Override
     public void readFields(DataInput in) throws IOException {
         super.readFields(in);
+        System.out.println("I've read the coordinates of centroid");
         this.id = in.readInt();
+        System.out.println("Never reach this point"); //FIXME readInt() does not end.
     }
 
     public int getId() {

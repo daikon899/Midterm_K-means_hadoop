@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -29,7 +30,7 @@ public class kMeans {
 
 
         // create a job until no changes are detected
-        // FIXME something is wrong with map class or in write/read process
+        // FIXME something is wrong with map class or in read process
 
 
         int code;

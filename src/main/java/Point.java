@@ -1,3 +1,4 @@
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Writable;
 
 import java.io.DataInput;
@@ -14,7 +15,7 @@ public class Point implements Writable {
         this.z = z;
     }
 
-    //TODO check if all write and readFields methods are correct
+
     @Override
     public void write(DataOutput out) throws IOException {
         out.writeFloat(x);

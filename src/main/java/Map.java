@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.log4j.Logger;
@@ -51,6 +52,6 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
         }
 
         context.write(bestCentroid, p);
-        logger.info("x:" + x + " y:" + y + " z:" + z);
+        //logger.info("x:" + x + " y:" + y + " z:" + z);
     }
 }
