@@ -8,6 +8,8 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.util.Random;
+
 public class kMeans {
 
     public static void main(String[] args) throws Exception {
@@ -23,15 +25,13 @@ public class kMeans {
         //create centroids and pass them to Configuration
         Gson gson = new Gson();
         for (int i = 0; i < k; i++) {
-            Centroid c = new Centroid(i,0, 0, 0); // TODO choose better centroids
+            Centroid c = new Centroid(i, new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
             String cSerialized = gson.toJson(c);   //serialize
             conf.set(Integer.toString(i), cSerialized);
         }                        // ...can also be used java serializer
 
 
         // create a job until no changes are detected
-        // FIXME something is wrong with map class or in read process
-
 
         int code;
         do {
@@ -57,7 +57,7 @@ public class kMeans {
 
             code = job.waitForCompletion(true) ? 0 : 1;
 
-            System.out.println("Job ended");
+            System.out.println("Job ended with code " + code + " and clusterChanged is " + Boolean.parseBoolean(conf.get("clusterChanged")));
 
         } while(Boolean.parseBoolean(conf.get("clusterChanged")) && code == 0);
 

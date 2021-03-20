@@ -29,7 +29,6 @@ public class Point implements Writable {
         this.x = in.readFloat();
         this.y = in.readFloat();
         this.z = in.readFloat();
-        System.out.println("Point' coordinates ok!");
     }
 
     public float getDistance(Point p){

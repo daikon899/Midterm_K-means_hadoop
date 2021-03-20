@@ -35,6 +35,7 @@ public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
         boolean changed = c.setCoords( sumX / numPoints, sumY / numPoints, sumZ / numPoints);
         if (changed){
             conf.setBoolean("clusterChanged", true);
+            logger.info("Reducer set the value of clusterChanged to True"); // FIXME even if it should be True at the end of the job it is False
         }
 
         //serialize new centroids and write them in Configuration

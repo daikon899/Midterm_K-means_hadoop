@@ -45,7 +45,6 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
         this.y = in.readInt();
         this.z = in.readInt();
         this.id = in.readInt();
-        System.out.println("...finished reading the centroid!!");
     }
 
     public int getId() {
