@@ -15,6 +15,7 @@ public class Point implements Writable {
         this.z = z;
     }
 
+    Point() {}
 
     @Override
     public void write(DataOutput out) throws IOException {
@@ -28,6 +29,7 @@ public class Point implements Writable {
         this.x = in.readFloat();
         this.y = in.readFloat();
         this.z = in.readFloat();
+        System.out.println("Point' coordinates ok!");
     }
 
     public float getDistance(Point p){

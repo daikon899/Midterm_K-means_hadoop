@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Centroid extends Point implements WritableComparable <Centroid> {  //same thing as WritableComparable (Point implements writable)
 
-    private int id;
+    protected int id;
 
     public Centroid(int id, float x, float y, float z){
         super(x, y, z);
@@ -19,6 +19,7 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
     //TODO you don't need it. it is used to fix an error
     public Centroid(){
         super(0,0,0);
+        id = 0;
     }
 
 
@@ -32,16 +33,19 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
 
     @Override
     public void write(DataOutput out) throws IOException {
-        super.write(out);
-        out.write(id);
+        out.writeFloat(x);
+        out.writeFloat(y);
+        out.writeFloat(z);
+        out.writeInt(id);
     }
 
     @Override
     public void readFields(DataInput in) throws IOException {
-        super.readFields(in);
-        System.out.println("I've read the coordinates of centroid");
+        this.x = in.readInt();
+        this.y = in.readInt();
+        this.z = in.readInt();
         this.id = in.readInt();
-        System.out.println("Never reach this point"); //FIXME readInt() does not end.
+        System.out.println("...finished reading the centroid!!");
     }
 
     public int getId() {
