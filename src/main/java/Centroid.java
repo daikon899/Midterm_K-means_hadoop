@@ -17,7 +17,7 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
         this.id = id;
     }
 
-    //TODO you don't need it. it is used to fix an error
+
     public Centroid(){
         super(0,0,0);
         id = 0;

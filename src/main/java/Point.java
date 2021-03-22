@@ -51,5 +51,12 @@ public class Point implements Writable {
         return z;
     }
 
+    @Override
+    public String toString() {
+        String x = Float.toString(getX());
+        String y = Float.toString(getY());
+        String z = Float.toString(getZ());
+        return x + "," + y + "," + z;
+    }
 
 }

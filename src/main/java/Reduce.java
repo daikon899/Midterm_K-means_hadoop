@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 //calculate sum and update centroids
-public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
+public class Reduce extends Reducer<Centroid, Point, Text, IntWritable> {
     private final Logger logger = Logger.getLogger("loggerReducer");
     //boolean clusterChanged = false; //TODO try to use cleanup to set the "global" clusterChanged
 
@@ -22,20 +22,24 @@ public class Reduce extends Reducer<Centroid, Point, Point, IntWritable> {
         int numPoints = 0;
 
         Configuration conf = context.getConfiguration();
+        String cC = conf.get("clusterChanged");
+        boolean clusterChanged = Boolean.parseBoolean(cC);
 
         for (Point p: points){
             sumX += p.getX();
             sumY += p.getY();
             sumZ += p.getZ();
             numPoints += 1;
-            context.write(p, new IntWritable(clusterId));
+            context.write(new Text(p.toString()), new IntWritable(clusterId));
         }
 
         //calculate means and update centroids
         boolean changed = c.setCoords( sumX / numPoints, sumY / numPoints, sumZ / numPoints);
         if (changed){
             conf.setBoolean("clusterChanged", true);
-            logger.info("Reducer set the value of clusterChanged to True"); // FIXME even if it should be True at the end of the job it is False
+            cC = conf.get("clusterChanged");
+            clusterChanged = Boolean.parseBoolean(cC);
+            logger.info("Reducer set the value of clusterChanged to True"); // FIXME cannot translate configuration from reducer to main. The clusterChanged var is not updated in main
         }
 
         //serialize new centroids and write them in Configuration
