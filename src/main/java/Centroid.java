@@ -15,12 +15,14 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
     public Centroid(int id, float x, float y, float z){
         super(x, y, z);
         this.id = id;
+        numPoints = 0;
     }
 
 
     public Centroid(){
         super(0,0,0);
         id = 0;
+        numPoints = 0;
     }
 
 
@@ -50,6 +52,11 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
 
     public int getId() {
         return id;
+    }
+
+
+    public void incrementNumPoints(int nP) {
+        numPoints += nP;
     }
 
     //returns true if x,y,z are different from actual

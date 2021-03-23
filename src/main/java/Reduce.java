@@ -10,42 +10,41 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 //calculate sum and update centroids
-public class Reduce extends Reducer<Centroid, Point, Text, IntWritable> {
+public class Reduce extends Reducer<Centroid, Point, IntWritable, Centroid> {
     private final Logger logger = Logger.getLogger("loggerReducer");
     //boolean clusterChanged = false; //TODO try to use cleanup to set the "global" clusterChanged
 
+    public static enum CHECK {
+        CONVERGENCE
+    };
+
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{
-        logger.info("Starting Reduce process...");
-        int clusterId = c.getId();
-        float sumX = 0, sumY = 0, sumZ = 0;
-        int numPoints = 0;
+        Point sumPoints = new Point();
 
-        Configuration conf = context.getConfiguration();
-        String cC = conf.get("clusterChanged");
-        boolean clusterChanged = Boolean.parseBoolean(cC);
-
-        for (Point p: points){
-            sumX += p.getX();
-            sumY += p.getY();
-            sumZ += p.getZ();
-            numPoints += 1;
-            context.write(new Text(p.toString()), new IntWritable(clusterId));
+        for (Point p : points) {
+            sumPoints.setX(sumPoints.getX() + p.getX());
+            sumPoints.setY(sumPoints.getY() + p.getY());
+            sumPoints.setZ(sumPoints.getZ() + p.getZ());
+            sumPoints.incrementNumPoints();
         }
 
         //calculate means and update centroids
+        float sumX = sumPoints.getX();
+        float sumY = sumPoints.getY();
+        float sumZ = sumPoints.getZ();
+        int numPoints = sumPoints.getNumberOfPoints();
         boolean changed = c.setCoords( sumX / numPoints, sumY / numPoints, sumZ / numPoints);
+
         if (changed){
-            conf.setBoolean("clusterChanged", true);
-            cC = conf.get("clusterChanged");
-            clusterChanged = Boolean.parseBoolean(cC);
-            logger.info("Reducer set the value of clusterChanged to True"); // FIXME cannot translate configuration from reducer to main. The clusterChanged var is not updated in main
+            context.getCounter(CHECK.CONVERGENCE).increment(1);
         }
 
+        Configuration conf = context.getConfiguration();
         //serialize new centroids and write them in Configuration
-        Gson gson = new Gson();
-        String cSerialized = gson.toJson(c);
-        conf.set(Integer.toString(clusterId), cSerialized);
+        //TODO
+
+        context.write(new IntWritable(c.getId()), c);
     }
 
     //execution at the end of the task

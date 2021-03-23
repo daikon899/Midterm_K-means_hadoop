@@ -1,12 +1,16 @@
+
 import com.google.gson.Gson;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.log4j.Logger;
 
 
 import java.io.IOException;
+import org.apache.hadoop.fs.Path;
+
+
+import java.nio.file.FileSystem;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -47,7 +51,7 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
             float d = c.getDistance(p);
             if (d < minDistance){
                 bestCentroid = c;
-                d = minDistance;
+                minDistance = d;
             }
         }
 

@@ -1,4 +1,3 @@
-import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Writable;
 
 import java.io.DataInput;
@@ -8,15 +7,17 @@ import java.io.IOException;
 public class Point implements Writable {
     // TODO check if thees fields have to be FloatWritable
     protected float x, y, z;
-
+    protected int numPoints;
 
     Point(float x, float y, float z){
         this.x = x;
         this.y = y;
         this.z = z;
+        numPoints = 1;
     }
 
-    Point() {}
+    Point() {
+        numPoints = 1;}
 
     @Override
     public void write(DataOutput out) throws IOException {
@@ -49,6 +50,30 @@ public class Point implements Writable {
 
     public float getZ() {
         return z;
+    }
+
+    public int getNumberOfPoints() {
+        return numPoints;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
+    }
+
+    public void setNumberOfPoints(int numPoints) {
+        this.numPoints = numPoints;
+    }
+
+    public void incrementNumPoints() {
+        numPoints++;
     }
 
     @Override

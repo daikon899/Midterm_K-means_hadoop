@@ -8,6 +8,8 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class kMeans {
@@ -43,13 +45,13 @@ public class kMeans {
             job.setJarByClass(kMeans.class);
             // specify Mapper Reducer
             job.setMapperClass(Map.class);
-            //job.setCombinerClass(Combine.class); // TODO remove comment when and if a better version of the combiner is implemented
+            job.setCombinerClass(Combine.class);
             job.setReducerClass(Reduce.class);
             // specify output formats
             job.setMapOutputKeyClass(Centroid.class);
             job.setMapOutputValueClass(Point.class);
-            job.setOutputKeyClass(Point.class);
-            job.setOutputValueClass(IntWritable.class);
+            job.setOutputKeyClass(IntWritable.class);
+            job.setOutputValueClass(Centroid.class);
             // set input and output folders
             FileInputFormat.addInputPath(job, inputDir);
             FileOutputFormat.setOutputPath(job, outputDir);
@@ -64,7 +66,6 @@ public class kMeans {
 
 
         System.exit(code);
-
 
 
 
