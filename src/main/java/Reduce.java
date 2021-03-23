@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 //calculate sum and update centroids
 public class Reduce extends Reducer<Centroid, Point, IntWritable, Centroid> {
     private final Logger logger = Logger.getLogger("loggerReducer");
-    //boolean clusterChanged = false; //TODO try to use cleanup to set the "global" clusterChanged
 
     public static enum CHECK {
         CONVERGENCE
@@ -39,10 +38,6 @@ public class Reduce extends Reducer<Centroid, Point, IntWritable, Centroid> {
         if (changed){
             context.getCounter(CHECK.CONVERGENCE).increment(1);
         }
-
-        Configuration conf = context.getConfiguration();
-        //serialize new centroids and write them in Configuration
-        //TODO
 
         context.write(new IntWritable(c.getId()), c);
     }

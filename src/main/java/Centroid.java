@@ -50,6 +50,16 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
         this.id = in.readInt();
     }
 
+    @Override
+    public String toString() {
+        String id = Integer.toString(getId());
+        String x = Float.toString(getX());
+        String y = Float.toString(getY());
+        String z = Float.toString(getZ());
+        String numPoints = Integer.toString(getNumberOfPoints());
+        return id + "," + x + "," + y + "," + z + "," + numPoints;
+    }
+
     public int getId() {
         return id;
     }

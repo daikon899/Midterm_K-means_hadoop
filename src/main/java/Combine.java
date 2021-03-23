@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 //write partial sum for each cluster
-//TODO try to implement a better version or remove it
 public class Combine extends Reducer<Centroid, Point, Centroid, Point> {
     private final Logger logger = Logger.getLogger("loggerCombiner");
 

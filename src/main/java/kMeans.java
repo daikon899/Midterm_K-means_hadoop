@@ -16,6 +16,10 @@ import java.util.Random;
 
 public class kMeans {
 
+    public static void updateCentroids(Configuration c) {
+
+    }
+
     public static void main(String[] args) throws Exception {
 
         int k = 5;
