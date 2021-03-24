@@ -7,10 +7,8 @@ import org.apache.log4j.Logger;
 
 
 import java.io.IOException;
-import org.apache.hadoop.fs.Path;
 
 
-import java.nio.file.FileSystem;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -56,6 +54,6 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
         }
 
         context.write(bestCentroid, p);
-        //logger.info("x:" + x + " y:" + y + " z:" + z);
+        logger.info("point put in cluster " + bestCentroid.getId());
     }
 }

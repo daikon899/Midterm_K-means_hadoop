@@ -2,8 +2,6 @@ import com.google.gson.Gson;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.FloatWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Counters;
@@ -16,6 +14,23 @@ import java.util.Random;
 
 
 public class kMeans {
+
+    // FIXME probably there is some issue with generating centroids that are not points of the dataset, only one cluster is filled...
+    public static void generateCentroids(Configuration c) {
+        int k = Integer.parseInt(c.get("k"));
+        Gson gson = new Gson();
+        Random rand = new Random();
+        for (int i = 0; i < k; i++) {
+            float x = (float) (Math.floor(100.0 * rand.nextFloat() * 100) / 100);
+            float y = (float) (Math.floor(100.0 * rand.nextFloat() * 100) / 100);
+            float z = 0;
+            int numPoints = 0;
+            Centroid centroid = new Centroid(i, x, y, z);
+            centroid.setNumberOfPoints(numPoints);
+            String cSerialized = gson.toJson(centroid);
+            c.set(Integer.toString(i), cSerialized);
+        }
+    }
 
     public static void updateCentroids(Configuration c) throws FileNotFoundException , IOException{
         String pathToCsv = "output/part-r-00000";
@@ -50,14 +65,7 @@ public class kMeans {
         Configuration conf = new Configuration();
         conf.setInt("k", k);
         //create centroids and pass them to Configuration
-        Gson gson = new Gson();
-        for (int i = 0; i < k; i++) {
-            // TODO choose better centroids
-            Centroid c = new Centroid(i, new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
-            String cSerialized = gson.toJson(c);   //serialize
-            conf.set(Integer.toString(i), cSerialized);
-        }                        // ...can also be used java serializer
-
+        generateCentroids(conf);                      // ...can also be used java serializer
 
         // create a job until no changes are detected
 
