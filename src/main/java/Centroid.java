@@ -15,14 +15,14 @@ public class Centroid extends Point implements WritableComparable <Centroid> {
     public Centroid(int id, float x, float y, float z){
         super(x, y, z);
         this.id = id;
-        numPoints = 0;
+        numPoints = 1;
     }
 
 
     public Centroid(){
         super(0,0,0);
         id = 0;
-        numPoints = 0;
+        numPoints = 1;
     }
 
 
@@ -36,17 +36,13 @@ public class Centroid extends Point implements WritableComparable <Centroid> {
 
     @Override
     public void write(DataOutput out) throws IOException {
-        out.writeFloat(x);
-        out.writeFloat(y);
-        out.writeFloat(z);
+        super.write(out);
         out.writeInt(id);
     }
 
     @Override
     public void readFields(DataInput in) throws IOException {
-        this.x = in.readInt();
-        this.y = in.readInt();
-        this.z = in.readInt();
+        super.readFields(in);
         this.id = in.readInt();
     }
 
