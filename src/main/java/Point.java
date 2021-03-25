@@ -17,7 +17,8 @@ public class Point implements Writable {
     }
 
     Point() {
-        numPoints = 1;}
+        numPoints = 1;
+    }
 
     @Override
     public void write(DataOutput out) throws IOException {

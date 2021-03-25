@@ -14,18 +14,19 @@ public class Combine extends Reducer<Centroid, Point, Centroid, Point> {
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException {
         logger.info("Combiner started");
 
-        Point sumPoints = new Point();
+        float sumX = 0, sumY = 0, sumZ = 0;
+        int numPoints = 0;
 
         for (Point p : points) {
-            sumPoints.setX(sumPoints.getX() + p.getX());
-            sumPoints.setY(sumPoints.getY() + p.getY());
-            sumPoints.setZ(sumPoints.getZ() + p.getZ());
-            sumPoints.incrementNumPoints();
-            context.write(c, p);
+            sumX += p.getX();
+            sumY += p.getY();
+            sumZ += p.getZ();
+            numPoints++;
         }
 
+        Point sumPoints = new Point(sumX, sumY, sumZ);
+        sumPoints.setNumberOfPoints(numPoints);
         context.write(c, sumPoints);
-
     }
 
 }
