@@ -9,7 +9,7 @@ public class Point implements Writable {
     protected float x, y, z;
     protected int numPoints;
 
-    Point(float x, float y, float z){
+    Point(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -73,8 +73,8 @@ public class Point implements Writable {
         this.numPoints = numPoints;
     }
 
-    public void incrementNumPoints() {
-        numPoints++;
+    public void incrementNumPoints(int add) {
+        numPoints += add;
     }
 
     @Override

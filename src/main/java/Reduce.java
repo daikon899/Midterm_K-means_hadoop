@@ -21,23 +21,26 @@ public class Reduce extends Reducer<Centroid, Point, NullWritable, Centroid> {
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{
         Point sumPoints = new Point();
-
-        float sumX = 0, sumY = 0, sumZ = 0;
-        int numPoints = 0;
+        sumPoints.setNumberOfPoints(0); // this is not a real point, it holds partial sums
 
         for (Point p : points) {
-            sumX += p.getX();
-            sumY += p.getY();
-            sumZ += p.getZ();
-            numPoints += p.getNumberOfPoints();
+            sumPoints.setX(sumPoints.getX() + p.getX());
+            sumPoints.setY(sumPoints.getY() + p.getY());
+            sumPoints.setZ(sumPoints.getZ() + p.getZ());
+            sumPoints.incrementNumPoints(p.getNumberOfPoints());
         }
 
         //calculate means and update centroids
+        float sumX = sumPoints.getX();
+        float sumY = sumPoints.getY();
+        float sumZ = sumPoints.getZ();
+        int numPoints = sumPoints.getNumberOfPoints();
         boolean changed = c.setCoords( sumX / numPoints, sumY / numPoints, sumZ / numPoints);
 
         if (changed){
             context.getCounter(CHECK.CONVERGENCE).increment(1);
         }
+
         context.write(NullWritable.get(), c);
     }
 
