@@ -25,6 +25,7 @@ public class Point implements Writable {
         out.writeFloat(x);
         out.writeFloat(y);
         out.writeFloat(z);
+        out.writeInt(numPoints);
     }
 
     @Override
@@ -32,6 +33,7 @@ public class Point implements Writable {
         this.x = in.readFloat();
         this.y = in.readFloat();
         this.z = in.readFloat();
+        this.numPoints = in.readInt();
     }
 
     public float getDistance(Point p){
