@@ -14,6 +14,7 @@ import java.util.StringTokenizer;
 
 
 //same of assignCluster() function
+
 public class Map extends Mapper<Object, Text, Centroid, Point> {
     private final Logger logger = Logger.getLogger("MapLogger");
     private ArrayList<Centroid> centroids = new ArrayList<>();

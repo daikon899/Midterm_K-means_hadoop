@@ -10,14 +10,15 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 
 public class kMeans {
 
     // FIXME probably there is some issue with generating centroids that are not points of the dataset, only one cluster is filled...
-    public static void generateCentroids(Configuration c) {
-        int k = Integer.parseInt(c.get("k"));
+    public static void generateCentroids(Configuration c) throws IOException {
+        /*int k = Integer.parseInt(c.get("k"));
         Gson gson = new Gson();
         Random rand = new Random();
         for (int i = 0; i < k; i++) {
@@ -28,10 +29,35 @@ public class kMeans {
             centroid.setNumberOfPoints(0);
             String cSerialized = gson.toJson(centroid);
             c.set(Integer.toString(i), cSerialized);
+        }*/
+        String pathToCsv = "input/dataset.csv";
+        String row;
+        BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
+        Gson gson = new Gson();
+
+        ArrayList<String> points = new ArrayList<>();
+        while ((row = csvReader.readLine()) != null) {
+            points.add(row);
+        }
+        csvReader.close();
+
+        Random rand = new Random();
+        int k = Integer.parseInt(c.get("k"));
+        for (int i = 0; i < k; i++) {
+            int index = rand.nextInt(1000);
+            String[] pointStr = points.get(index).split(",");
+            float x = Float.parseFloat(pointStr[0]);
+            float y = Float.parseFloat(pointStr[1]);
+            float z = Float.parseFloat(pointStr[2]);
+            int numPoints = 0;
+            Centroid centroid = new Centroid(i, x, y, z);
+            centroid.setNumberOfPoints(numPoints);
+            String cSerialized = gson.toJson(centroid);
+            c.set(Integer.toString(i), cSerialized);
         }
     }
 
-    public static void updateCentroids(Configuration c) throws FileNotFoundException , IOException{
+    public static void updateCentroids(Configuration c) throws IOException{
         String pathToCsv = "output/part-r-00000";
         String row;
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
@@ -104,9 +130,8 @@ public class kMeans {
 
             System.out.println("Job ended with code " + code + " and clusterChanged is " + clusterChanged);
 
-            updateCentroids(conf);
-
-            System.out.println("Ho aggiornato i centroidi");
+            if(code == 0)
+                updateCentroids(conf);
 
         } while(clusterChanged && code == 0);
 
