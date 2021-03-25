@@ -56,6 +56,6 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
         }
 
         context.write(bestCentroid, p);
-        logger.info("point put in cluster " + bestCentroid.getId());
+        //logger.info("point put in cluster " + bestCentroid.getId());
     }
 }

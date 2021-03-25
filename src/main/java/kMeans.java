@@ -137,6 +137,21 @@ public class kMeans {
         } while(clusterChanged && code == 0);
 
 
+        FileSystem.get(conf).delete(outputDir, true);
+
+        Job job = Job.getInstance(conf, "assignCentroids");
+        job.setJarByClass(kMeans.class);
+        // specify Mapper Reducer
+        job.setMapperClass(Map.class);
+
+        job.setMapOutputKeyClass(Centroid.class);
+        job.setMapOutputValueClass(Point.class);
+
+        FileInputFormat.addInputPath(job, inputDir);
+        FileOutputFormat.setOutputPath(job, outputDir);
+
+        code = job.waitForCompletion(true) ? 0 : 1;
+
         System.exit(code);
 
 

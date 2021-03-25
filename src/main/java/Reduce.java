@@ -35,6 +35,8 @@ public class Reduce extends Reducer<Centroid, Point, NullWritable, Centroid> {
 
         if (changed)
             context.getCounter(CHECK.CONVERGENCE).increment(1);
+        else
+            logger.warning("!!!!!THIS CLUSTER DID NOT CHANGE!!!!!");
 
         context.write(NullWritable.get(), c);
     }
