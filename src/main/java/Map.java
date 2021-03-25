@@ -21,6 +21,7 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
     //get centroids from conf
     @Override
     protected void setup(Context context) {
+
         Configuration conf = context.getConfiguration();
         Gson gson = new Gson();
         int k = Integer.parseInt(conf.get("k")); // get k from conf

@@ -78,9 +78,9 @@ public class Point implements Writable {
 
     @Override
     public String toString() {
-        String x = Float.toString(getX());
-        String y = Float.toString(getY());
-        String z = Float.toString(getZ());
+        String x = Float.toString(this.x);
+        String y = Float.toString(this.y);
+        String z = Float.toString(this.z);
         return x + "," + y + "," + z;
     }
 

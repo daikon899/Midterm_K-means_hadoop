@@ -7,7 +7,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 
-public class Centroid extends Point implements WritableComparable <Centroid> {  //same thing as WritableComparable (Point implements writable)
+public class Centroid extends Point implements WritableComparable <Centroid> {
 
     // TODO check if this field has to be IntWritable
     protected int id;
@@ -52,18 +52,17 @@ public class Centroid extends Point implements WritableComparable <Centroid> {  
 
     @Override
     public String toString() {
-        String id = Integer.toString(getId());
-        String x = Float.toString(getX());
-        String y = Float.toString(getY());
-        String z = Float.toString(getZ());
-        String numPoints = Integer.toString(getNumberOfPoints());
+        String id = Integer.toString(this.id);
+        String x = Float.toString(this.x);
+        String y = Float.toString(this.y);
+        String z = Float.toString(this.z);
+        String numPoints = Integer.toString(this.numPoints);
         return id + "," + x + "," + y + "," + z + "," + numPoints;
     }
 
     public int getId() {
         return id;
     }
-
 
     public void incrementNumPoints(int nP) {
         numPoints += nP;

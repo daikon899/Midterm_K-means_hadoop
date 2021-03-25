@@ -24,9 +24,8 @@ public class kMeans {
             float x = (float) (Math.floor(100.0 * rand.nextFloat() * 100) / 100);
             float y = (float) (Math.floor(100.0 * rand.nextFloat() * 100) / 100);
             float z = 0;
-            int numPoints = 0;
             Centroid centroid = new Centroid(i, x, y, z);
-            centroid.setNumberOfPoints(numPoints);
+            centroid.setNumberOfPoints(0);
             String cSerialized = gson.toJson(centroid);
             c.set(Integer.toString(i), cSerialized);
         }
