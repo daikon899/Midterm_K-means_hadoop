@@ -124,6 +124,7 @@ public class kMeans {
             Counters counters = job.getCounters();
             Counter clCgd = counters.findCounter(Reduce.CHECK.CONVERGENCE);
 
+
             if (clCgd.getValue() != 0) {
                 clusterChanged = true;
             }
