@@ -5,7 +5,10 @@ import sklearn.datasets as sk
 import os
 
 points_num = int(sys.argv[1])
-X, y = sk.make_blobs(n_samples=points_num, n_features=2, centers=4, cluster_std=1)
+k = int(sys.argv[2])
+std = float(sys.argv[3])
+
+X, y = sk.make_blobs(n_samples=points_num, n_features=2, centers=k, cluster_std=std)
 array = X.tolist()
 for a in array:
     a.append(0)
