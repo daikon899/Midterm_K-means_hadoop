@@ -1,6 +1,8 @@
 # K-means algorithm with hadoop
 This is an implementation of k-means algorithm for distributed systems
 
+## Generating dataset
+
 You can generate dataset with 
 ```
 python datasetgen.py N K STD
@@ -9,6 +11,8 @@ where N is number of points you want to generate, K is the number of clusters an
 ```
 python datasetgen.py 1000 3 0.45
 ```
+
+## Plotting
 
 After running program you can plot results with 
 ```
