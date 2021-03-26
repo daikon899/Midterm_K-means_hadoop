@@ -30,6 +30,7 @@ public class kMeans {
             String cSerialized = gson.toJson(centroid);
             c.set(Integer.toString(i), cSerialized);
         }*/
+
         String pathToCsv = "input/dataset.csv";
         String row;
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
@@ -55,6 +56,7 @@ public class kMeans {
             String cSerialized = gson.toJson(centroid);
             c.set(Integer.toString(i), cSerialized);
         }
+
     }
 
     public static void updateCentroids(Configuration c) throws IOException{
