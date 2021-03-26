@@ -13,24 +13,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class kMeans {
 
-    // FIXME probably there is some issue with generating centroids that are not points of the dataset, only one cluster is filled...
+    //create centroids and pass them to Configuration
     public static void generateCentroids(Configuration c) throws IOException {
-       /* int k = Integer.parseInt(c.get("k"));
-        Gson gson = new Gson();
-        Random rand = new Random();
-        for (int i = 0; i < k; i++) {
-            float x = (float) (Math.floor(100.0 * rand.nextFloat() * 100) / 100);
-            float y = (float) (Math.floor(100.0 * rand.nextFloat() * 100) / 100);
-            float z = 0;
-            Centroid centroid = new Centroid(i, x, y, z);
-            centroid.setNumberOfPoints(0);
-            String cSerialized = gson.toJson(centroid);
-            c.set(Integer.toString(i), cSerialized);
-        }*/
-
         String pathToCsv = "input/dataset.csv";
         String row;
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
@@ -59,13 +45,13 @@ public class kMeans {
 
     }
 
+    // parse centroids from output and pass them to Configuration
     public static void updateCentroids(Configuration c) throws IOException{
         String pathToCsv = "output/part-r-00000";
         String row;
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
         Gson gson = new Gson();
 
-        // parse csv, generate centroids and serialize them, then update conf with the new values
         while ((row = csvReader.readLine()) != null) {
             String[] data = row.split(",");
             int id = Integer.parseInt(data[0]);
@@ -81,20 +67,17 @@ public class kMeans {
         csvReader.close();
     }
 
+
     public static void main(String[] args) throws Exception {
 
         int k = 5;
         Path inputDir = new Path("input");
         Path outputDir = new Path("output");
 
-
-        //pass k and centroids to Configuration
         Configuration conf = new Configuration();
         conf.setInt("k", k);
-        //create centroids and pass them to Configuration
-        generateCentroids(conf);                      // ...can also be used java serializer
+        generateCentroids(conf);
 
-        // create a job until no changes are detected
 
         int code;
         boolean clusterChanged;
@@ -116,48 +99,37 @@ public class kMeans {
             // set input and output folders
             FileInputFormat.addInputPath(job, inputDir);
             FileOutputFormat.setOutputPath(job, outputDir);
-            // wait for job completion
-            System.out.println("Starting the job...");
 
             code = job.waitForCompletion(true) ? 0 : 1;
 
-
-            // check if the enum has been incremented by reducers, if so set clusterChanged to true
+            //check if clusters are changed
             Counters counters = job.getCounters();
             Counter clCgd = counters.findCounter(Reduce.CHECK.CONVERGENCE);
-
-
             if (clCgd.getValue() != 0) {
                 clusterChanged = true;
             }
-
-            System.out.println("Job ended with code " + code + " and clusterChanged is " + clusterChanged);
 
             if(code == 0)
                 updateCentroids(conf);
 
         } while(clusterChanged && code == 0);
 
+        //job for output
+        if(code == 0) {
+            FileSystem.get(conf).delete(outputDir, true);
 
-        FileSystem.get(conf).delete(outputDir, true);
+            Job job = Job.getInstance(conf, "assignCentroids");
+            job.setJarByClass(kMeans.class);
+            job.setMapperClass(Map.class);
 
-        Job job = Job.getInstance(conf, "assignCentroids");
-        job.setJarByClass(kMeans.class);
-        // specify Mapper Reducer
-        job.setMapperClass(Map.class);
+            job.setMapOutputKeyClass(Centroid.class);
+            job.setMapOutputValueClass(Point.class);
 
-        job.setMapOutputKeyClass(Centroid.class);
-        job.setMapOutputValueClass(Point.class);
+            FileInputFormat.addInputPath(job, inputDir);
+            FileOutputFormat.setOutputPath(job, outputDir);
 
-        FileInputFormat.addInputPath(job, inputDir);
-        FileOutputFormat.setOutputPath(job, outputDir);
-
-        code = job.waitForCompletion(true) ? 0 : 1;
-
+            code = job.waitForCompletion(true) ? 0 : 1;
+        }
         System.exit(code);
-
-
-
     }
-
 }

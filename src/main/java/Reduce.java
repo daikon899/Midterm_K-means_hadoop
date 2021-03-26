@@ -1,22 +1,14 @@
-import com.google.gson.Gson;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.io.FloatWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
-//calculate sum and update centroids
+//calculate sum and update centroids with new coordinates
 public class Reduce extends Reducer<Centroid, Point, NullWritable, Centroid> {
-    private final Logger logger = Logger.getLogger("loggerReducer");
 
-    public static enum CHECK {
+    public enum CHECK {
         CONVERGENCE
-    };
+    }
 
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException{
@@ -32,18 +24,8 @@ public class Reduce extends Reducer<Centroid, Point, NullWritable, Centroid> {
         }
 
         boolean changed = c.setCoords( sumX / numPoints, sumY / numPoints, sumZ / numPoints);
-
         if (changed)
             context.getCounter(CHECK.CONVERGENCE).increment(1);
-        else
-            logger.warning("!!!!!THIS CLUSTER DID NOT CHANGE!!!!!");
-
         context.write(NullWritable.get(), c);
-    }
-
-    //execution at the end of the task
-    @Override
-    protected void cleanup(Context context) {
-        //maybe we don't need it
     }
 }

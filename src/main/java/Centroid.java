@@ -1,15 +1,11 @@
-import org.apache.hadoop.io.FloatWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.WritableComparable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-
 public class Centroid extends Point implements WritableComparable <Centroid> {
 
-    // TODO check if this field has to be IntWritable
     protected int id;
 
     public Centroid(int id, float x, float y, float z){
@@ -18,13 +14,11 @@ public class Centroid extends Point implements WritableComparable <Centroid> {
         numPoints = 1;
     }
 
-
     public Centroid(){
         super(0,0,0);
         id = 0;
         numPoints = 1;
     }
-
 
     @Override
     public int compareTo(Centroid o) {
@@ -58,10 +52,6 @@ public class Centroid extends Point implements WritableComparable <Centroid> {
 
     public int getId() {
         return id;
-    }
-
-    public void incrementNumPoints(int nP) {
-        numPoints += nP;
     }
 
     //returns true if x,y,z are different from actual

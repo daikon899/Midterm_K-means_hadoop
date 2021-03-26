@@ -5,7 +5,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class Point implements Writable {
-    // TODO check if thees fields have to be FloatWritable
     protected float x, y, z;
     protected int numPoints;
 
@@ -34,6 +33,14 @@ public class Point implements Writable {
         this.y = in.readFloat();
         this.z = in.readFloat();
         this.numPoints = in.readInt();
+    }
+
+    @Override
+    public String toString() {
+        String x = Float.toString(this.x);
+        String y = Float.toString(this.y);
+        String z = Float.toString(this.z);
+        return x + "," + y + "," + z;
     }
 
     public float getDistance(Point p){
@@ -73,18 +80,6 @@ public class Point implements Writable {
 
     public void setNumberOfPoints(int numPoints) {
         this.numPoints = numPoints;
-    }
-
-    public void incrementNumPoints(int add) {
-        numPoints += add;
-    }
-
-    @Override
-    public String toString() {
-        String x = Float.toString(this.x);
-        String y = Float.toString(this.y);
-        String z = Float.toString(this.z);
-        return x + "," + y + "," + z;
     }
 
 }

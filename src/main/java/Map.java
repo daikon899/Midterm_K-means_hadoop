@@ -13,28 +13,23 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 
-//same of assignCluster() function
-
+//assign each point to closest cluster
 public class Map extends Mapper<Object, Text, Centroid, Point> {
-    private final Logger logger = Logger.getLogger("MapLogger");
     private ArrayList<Centroid> centroids = new ArrayList<>();
 
     //get centroids from conf
     @Override
     protected void setup(Context context) {
-
         Configuration conf = context.getConfiguration();
         Gson gson = new Gson();
-        int k = Integer.parseInt(conf.get("k")); // get k from conf
-        //get and deserialize centroids
+        int k = Integer.parseInt(conf.get("k"));
         for (int i = 0; i < k; i++){
             String c_string = conf.get(String.valueOf(i));
-            Centroid c = gson.fromJson(c_string, Centroid.class);
+            Centroid c = gson.fromJson(c_string, Centroid.class); //deserialize
             centroids.add(i, c);
         }
     }
 
-    // called for each text line
     public void map(Object key, Text coord, Context context) throws IOException, InterruptedException {
 
         StringTokenizer tokenizer = new StringTokenizer(coord.toString(), ",");
@@ -56,6 +51,5 @@ public class Map extends Mapper<Object, Text, Centroid, Point> {
         }
 
         context.write(bestCentroid, p);
-        //logger.info("point put in cluster " + bestCentroid.getId());
     }
 }

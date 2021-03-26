@@ -5,14 +5,11 @@ import org.apache.hadoop.mapreduce.Reducer;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-//write partial sum for each cluster
+//calculate partial sum for each cluster
 public class Combine extends Reducer<Centroid, Point, Centroid, Point> {
-    private final Logger logger = Logger.getLogger("loggerCombiner");
-
 
     @Override
     public void reduce(Centroid c, Iterable<Point> points, Context context) throws IOException, InterruptedException {
-        logger.info("Combiner started");
 
         float sumX = 0, sumY = 0, sumZ = 0;
         int numPoints = 0;
