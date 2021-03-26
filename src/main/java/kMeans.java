@@ -18,7 +18,7 @@ public class kMeans {
 
     // FIXME probably there is some issue with generating centroids that are not points of the dataset, only one cluster is filled...
     public static void generateCentroids(Configuration c) throws IOException {
-        /*int k = Integer.parseInt(c.get("k"));
+       /* int k = Integer.parseInt(c.get("k"));
         Gson gson = new Gson();
         Random rand = new Random();
         for (int i = 0; i < k; i++) {
