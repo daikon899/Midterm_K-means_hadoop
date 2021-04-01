@@ -18,3 +18,6 @@ After running program you can plot results with
 ```
 python plot.py
 ```
+## Other k-means versions
+- [Sequential](https://github.com/MarcoSolarino/Midterm_Parallel_Computing_K-means)
+- [CUDA](https://github.com/daikon899/Midterm_K-means_CUDA)
