@@ -21,18 +21,25 @@ public class kMeans {
         String row;
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
         Gson gson = new Gson();
+        int k = Integer.parseInt(c.get("k"));
+        int range = 20;
 
         ArrayList<String> points = new ArrayList<>();
-        while ((row = csvReader.readLine()) != null) {
-            points.add(row);
+
+        //select centroids randomly from first k*range points
+
+        for (int numLines = 0; numLines < k * range; numLines++){
+            if ((row = csvReader.readLine()) != null)
+                points.add(row);
+            else
+                break;
         }
         csvReader.close();
 
         Random rand = new Random();
-        int k = Integer.parseInt(c.get("k"));
         for (int i = 0; i < k; i++) {
-            int index = rand.nextInt(1000);
-            String[] pointStr = points.get(index).split(",");
+            int index = rand.nextInt(points.size());
+            String[] pointStr = points.remove(index).split(",");
             float x = Float.parseFloat(pointStr[0]);
             float y = Float.parseFloat(pointStr[1]);
             float z = Float.parseFloat(pointStr[2]);
@@ -70,7 +77,7 @@ public class kMeans {
 
     public static void main(String[] args) throws Exception {
 
-        int k = 5;
+        int k = Integer.parseInt(args[0]);
         Path inputDir = new Path("input");
         Path outputDir = new Path("output");
 
@@ -130,6 +137,7 @@ public class kMeans {
 
             code = job.waitForCompletion(true) ? 0 : 1;
         }
+
         System.exit(code);
     }
 }
