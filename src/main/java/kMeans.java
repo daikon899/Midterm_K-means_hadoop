@@ -27,7 +27,6 @@ public class kMeans {
         ArrayList<String> points = new ArrayList<>();
 
         //select centroids randomly from first k*range points
-
         for (int numLines = 0; numLines < k * range; numLines++){
             if ((row = csvReader.readLine()) != null)
                 points.add(row);
@@ -49,7 +48,6 @@ public class kMeans {
             String cSerialized = gson.toJson(centroid);
             c.set(Integer.toString(i), cSerialized);
         }
-
     }
 
     // parse centroids from output and pass them to Configuration
