@@ -1,24 +1,33 @@
-This is an implementation of k-means algorithm for distributed systems.
+![last commit](https://img.shields.io/github/last-commit/sim-pez/distributed_kmeans) ![](https://img.shields.io/github/languages/top/sim-pez/distributed_kmeans)
 
-## 1 - Generating dataset
-first you need to generate a dataset
+# Intro
+
+This is an implementation of [k-means  clustering algorithm](https://en.wikipedia.org/wiki/K-means_clustering) for distributed systems using Hadoop.
+You will need to manually specify the number of clusters _K_ when launching the program.
+
+# Generating dataset
+You can generate an _N_ points dataset using ```datasetgen.py```. You have to write also the number of clusters _K_ and the standard deviation. The command will be like:
 ```
 python datasetgen.py N K STD
 ```
-where N is the number of points you want to generate, K is the number of clusters and STD is standard deviation of points from clusters. Here is an example:
+example:
 ```
 python datasetgen.py 1000 3 0.45
 ```
 
-## 2 - Run
-You need to pass as argument how many clusters you need.
 
-## 3 - Plotting
-After running program you can plot result (for testing purpouses)
+# Plotting
+If you are running the program on a single node for testing purposes, you can also plot the result using:
 ```
 python plot.py
 ```
 
-## Other k-means versions
+
+# Other k-means versions
+We made also:
 - [Sequential version in C++](https://github.com/MarcoSolarino/Midterm_Parallel_Computing_K-means)
-- [CUDA](https://github.com/daikon899/Midterm_K-means_CUDA)
+- [CUDA](https://github.com/sim-pez/k_means_gpu)
+
+
+# Acknowledgments
+Parallel Computing - Computer Engineering Master Degree @[University of Florence](https://www.unifi.it/changelang-eng.html).
