@@ -25,7 +25,7 @@ python plot.py
 
 # Other k-means versions
 We made also:
-- [Sequential version in C++](https://github.com/MarcoSolarino/Midterm_Parallel_Computing_K-means)
+- [Sequential version](https://github.com/MarcoSolarino/Midterm_Parallel_Computing_K-means) in C++
 - [GPU accelerated version](https://github.com/sim-pez/k_means_gpu) in CUDA/C++
 
 
